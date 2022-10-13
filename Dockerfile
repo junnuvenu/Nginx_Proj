@@ -1,7 +1,7 @@
 FROM nginx:latest
 
 # Adding custom index.html
-ADD https://github.com/junnuvenu/Nginx_Proj/blob/main/index.html /usr/share/nginx/html/
+ADD https://github.com/junnuvenu/Nginx_Proj/blob/master/index.html /usr/share/nginx/html/
 
 # Adding read permissions to custom index.html
 RUN chmod +r /usr/share/nginx/html/index.html
