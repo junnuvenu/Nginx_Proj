@@ -14,7 +14,7 @@ pipeline {
 
         stage ('checkout') {
             steps {
-            checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/junnuvenu/Nginx_Proj']]])
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/junnuvenu/Nginx_Proj']]])
             }
         }
        
@@ -41,15 +41,15 @@ pipeline {
        // Stopping Docker containers for cleaner Docker run
      stage('stop previous containers') {
          steps {
-            sh 'docker ps -f name=mypythonContainer -q | xargs --no-run-if-empty docker container stop'
-            sh 'docker container ls -a -fname=mypythonContainer -q | xargs -r docker container rm'
+            sh 'docker ps -f name=mydemonginx -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -fname=mydemonginx -q | xargs -r docker container rm'
          }
        }
       
     stage('Docker Run') {
      steps{
          script {
-                sh 'docker run -d -p 8096:5000 --rm --name mypythonContainer ${registryUrl}/${registryName}'
+                sh 'docker run -d -p 8096:5000 --rm --name mydemonginx ${registryUrl}/${registryName}'
             }
       }
     }
