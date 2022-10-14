@@ -5,9 +5,9 @@ pipeline {
         //once you create ACR in Azure cloud, use that here
         registryName = "tstdemo"
         //- update your credentials ID after creating credentials for connecting to ACR
-        registryCredential = 'ACR2'
+        registryCredential = 'ACR'
         dockerImage = ''
-        registryUrl = 'demotstcontainer.azurecr.io'
+        registryUrl = 'tstcontainerdemo.azurecr.io'
        
     }
     
