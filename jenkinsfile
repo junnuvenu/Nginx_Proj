@@ -8,13 +8,13 @@ pipeline {
         registryCredential = 'AzureCR'
         dockerImage = ''
         // update you Azure container registery app URL info here (Access Keys)
-        registryUrl = 'nginxreg.azurecr.io'
+        registryUrl = 'prodregisteryngx.azurecr.io'
        
     }
     
     stages {
 
-        stage ('checkout') {
+        stage ('checkoutGit') {
             steps {
             checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/junnuvenu/Nginx_Proj']]])
             }
