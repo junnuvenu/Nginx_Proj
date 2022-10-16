@@ -8,7 +8,7 @@ pipeline {
         registryCredential = 'AzureCR'
         dockerImage = ''
         // update you Azure container registery app URL info here (Access Keys)
-        registryUrl = 'mynginxregistry.azurecr.io'
+        registryUrl = 'prodregisteryngx.azurecr.io'
        
     }
     
