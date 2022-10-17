@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:1.0
 
 # Adding custom index.html
 COPY templates/index.html /usr/share/nginx/html/
