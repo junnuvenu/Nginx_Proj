@@ -3,12 +3,12 @@ pipeline {
      
     environment {
         //once you create ACR in Azure cloud, use that here
-        registryName = "nginximage"
+        registryName = "nginxACRimage"
         //- update your credentials ID after creating credentials for connecting to ACR
         registryCredential = 'AzureCR'
         dockerImage = ''
         // update you Azure container registery app URL info here (Access Keys)
-        registryUrl = 'prodregisteryngx.azurecr.io'
+        registryUrl = 'azureconregis.azurecr.io
        
     }
     
