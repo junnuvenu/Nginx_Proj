@@ -1,0 +1,29 @@
+name: Deploy to Azure
+on:
+  push:
+    branches: [ auto-build-deployment ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v2
+      # Login to Azure
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.ssh-keys-azurevm }}
+      # Set the default subscription
+      - uses: azure/cli@v1
+        with:
+          azcliversion: 2.17.0
+          inlineScript: |
+            az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      # Deploy the image to an Azure VM
+      - uses: azure/cli@v1
+        with:
+          azcliversion: 2.17.0
+          inlineScript: |
+            # Create a resource group
+            az group create --name myresourcegroup --location westus2
+            # Create a VM and deploy the GHCR image to it
+            az vm create --resource-group myresourcegroup --name myvm --image ghcr.io/user/repo:latest --generate-ssh-keys
