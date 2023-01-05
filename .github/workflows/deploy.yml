@@ -1,7 +1,7 @@
 name: Deploy to Azure
 on:
   push:
-    branches: [ auto-build-deployment ]
+    branches: [ master ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -11,7 +11,7 @@ jobs:
       # Login to Azure
       - uses: azure/login@v1
         with:
-          creds: ${{ secrets.ssh-keys-azurevm }}
+          creds: ${{ secrets.AZURE_SECRET }}
       # Set the default subscription
       - uses: azure/cli@v1
         with:
@@ -24,6 +24,6 @@ jobs:
           azcliversion: 2.17.0
           inlineScript: |
             # Create a resource group
-            az group create --name myresourcegroup --location westus2
+            az group create --name rg-delta-devops --location eastus
             # Create a VM and deploy the GHCR image to it
-            az vm create --resource-group myresourcegroup --name myvm --image ghcr.io/user/repo:latest --generate-ssh-keys
+            az vm create --resource-group rg-delta-devops --name multi-tenant-application-testvm --image ghcr.io/junnuvenu/nginx:latest --generate-ssh-keys
