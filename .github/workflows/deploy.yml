@@ -1,4 +1,5 @@
-name: Deploy to Azure
+name: Deploy to Azure VM
+
 on:
   push:
     branches: [ master ]
@@ -6,33 +7,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code
-      - uses: actions/checkout@v2
-      # Install azure cli
-      - name: Install Azure cli
-        run: |
-          sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
-          curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
-          AZ_REPO=$(lsb_release -cs)
-          echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
-          sudo apt-get update
-          sudo apt-get install azure-cli
-      # Login to Azure
       - uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_SECRET }}
-      # Set the default subscription
-      - uses: azure/cli@v1
+          creds: ${{ secrets.AUTH_SECRET }}
+      - uses: azure/vm-deployment@v1
         with:
-          azcliversion: 2.17.0
-          inlineScript: |
-            az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-      # Deploy the image to an Azure VM
-      - uses: azure/cli@v1
-        with:
-          azcliversion: 2.17.0
-          inlineScript: |
-            # Create a resource group
-            az group create --name rg-delta-devops --location eastus
-            # Create a VM and deploy the GHCR image to it
-            az vm create --resource-group rg-delta-devops --name multi-tenant-application-testvm --image ghcr.io/junnuvenu/nginx:latest --generate-ssh-keys
+          resource-group: rg-delta-devops
+          vm-name: multi-tenant-application-docker-test 
+          image-url: ghcr.io/junnuvenu/nginx:latest
+          image-type: container
