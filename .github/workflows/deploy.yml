@@ -7,15 +7,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: azure/login@v1
+      - uses: actions/checkout@v2
+      - name: Deploy GHCR Image
+        uses: junnuvenu/nginx_projs@master
         with:
-          creds: ${{ secrets.AUTH_NEW }}
-      - uses: junnuvenu/nginx_proj@master
-
-        with:
-          resource-group: rg-delta-devops
           azure-subscription-id: '11edc895-44ef-4732-bb6d-ed995cc7934f'
           location: eastus
+          resource-group: rg-delta-devops
           vm-name: multi-tenant-application-docker-test-vm
-          image-url: docker pull ghcr.io/junnuvenu/nginx:latest
-          image-type: container
+          image-url: ddocker pull ghcr.io/junnuvenu/nginx:latest
+          admin-username: azureuser
+          admin-password: Venu12345678
