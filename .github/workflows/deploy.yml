@@ -4,17 +4,28 @@ on:
   push:
     branches: [ master ]
 jobs:
+  azure-login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Azure
+        uses: azure/cli@v2
+        with:
+          azcliversion: 2.15.1
+          inlineScript: |
+            az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Deploy GHCR Image
-        uses: junnuvenu/nginx_proj@master
+      - uses: azure/login@v1
+        with:
+          credential-name: ${{ secrets.ssh-keys-azurevm }}
+      - uses: azure/vm-deployment@v1
         with:
           azure-subscription-id: '11edc895-44ef-4732-bb6d-ed995cc7934f'
           location: eastus
           resource-group: rg-delta-devops
           vm-name: multi-tenant-application-docker-test-vm
-          image-url: ddocker pull ghcr.io/junnuvenu/nginx:latest
+          image-reference-id: ghcr.io/trackonomy/application-core-services:latest
+          image-type: container
           admin-username: azureuser
           admin-password: Venu12345678
