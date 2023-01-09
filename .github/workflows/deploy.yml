@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Deploy GHCR Image
-        uses: junnuvenu/nginx_projs@master
+        uses: junnuvenu/nginx_proj@master
         with:
           azure-subscription-id: '11edc895-44ef-4732-bb6d-ed995cc7934f'
           location: eastus
