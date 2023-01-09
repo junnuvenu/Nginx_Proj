@@ -1,4 +1,3 @@
-
 name: Deploy to Azure VM
 
 on:
@@ -18,8 +17,7 @@ jobs:
         with:
           resource-group: rg-delta-devops
           vm-name: multi-tenant-application-docker-test-vm
-          image-url: docker pull ghcr.io/junnuvenu/nginx:latest
+          image-url: ghcr.io/junnuvenu/nginx:latest
           image-type: container
           admin-username: azureuser
           admin-password: Venu12345678
-
