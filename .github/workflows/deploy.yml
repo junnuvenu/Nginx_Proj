@@ -18,10 +18,4 @@ jobs:
         with:
           vm-name: multi-tenant-application-docker-test-vm
           resource-group: rg-delta-devops
-          extension-name: DockerExtension
-          publisher: Docker
-          type: DockerExtension
-          type-handler-version: 1.1
-          auto-upgrade-minor-version: true
-          settings: '{"docker": {"port": "2376"}}'
-          protected-settings: '{"registryCredentials": {}}'
+          
