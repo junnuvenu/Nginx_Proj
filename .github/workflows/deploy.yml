@@ -13,11 +13,6 @@ jobs:
           azcliversion: 2.15.1
           inlineScript: |
             az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: azure/login@v1
-        with:
           credential-name: ${{ secrets.ssh-keys-azurevm }}
       - uses: azure/vm-deployment@v1
         with:
