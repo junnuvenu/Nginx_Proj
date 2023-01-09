@@ -21,11 +21,7 @@ jobs:
           credential-name: ${{ secrets.ssh-keys-azurevm }}
       - uses: azure/vm-deployment@v1
         with:
-          azure-subscription-id: '11edc895-44ef-4732-bb6d-ed995cc7934f'
-          location: eastus
           resource-group: rg-delta-devops
           vm-name: multi-tenant-application-docker-test-vm
           image-reference-id: ghcr.io/junnuvenu/nginx:latest
           image-type: container
-          admin-username: azureuser
-          admin-password: Venu12345678
