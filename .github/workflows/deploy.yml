@@ -13,11 +13,15 @@ jobs:
           azcliversion: 2.15.1
           inlineScript: |
             az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }} -s ${{ secrets.SUBSCRIPTION_ID }}
-      - uses: azure/virtual-machine-extension@v2
+      - name: Deploy Docker container to Azure VM
+        uses: azure/virtual-machine-extension@v2
         with:
-          resource-group: rg-delta-devops
           vm-name: multi-tenant-application-docker-test-vm
-          image-url: ghcr.io/junnuvenu/nginx:latest
-          image-type: container
-          admin-username: azureuser
-          admin-password: Venu12345678
+          resource-group: rg-delta-devops
+          extension-name: DockerExtension
+          publisher: Docker
+          type: DockerExtension
+          type-handler-version: 1.1
+          auto-upgrade-minor-version: true
+          settings: '{"docker": {"port": "2376"}}'
+          protected-settings: '{"registryCredentials": {}}'
