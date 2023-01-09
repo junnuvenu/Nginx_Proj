@@ -23,5 +23,5 @@ jobs:
         with:
           resource-group: rg-delta-devops
           vm-name: multi-tenant-application-docker-test-vm
-          image-reference-id: ghcr.io/junnuvenu/nginx:latest
+          image-url: ghcr.io/junnuvenu/nginx:latest
           image-type: container
