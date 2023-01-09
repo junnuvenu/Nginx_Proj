@@ -14,7 +14,7 @@ jobs:
           inlineScript: |
             az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }} -s ${{ secrets.SUBSCRIPTION_ID }}
       - name: Deploy Docker container to Azure VM
-        uses: azure/vm-deployment@v1
+        uses: https://github.com/azure/vm-deployment@v1
         with:
           vm-name: multi-tenant-application-docker-test-vm
           resource-group: rg-delta-devops
