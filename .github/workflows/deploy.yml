@@ -1,18 +1,20 @@
-name: Deploy to Azure VM
+name: Deploy GHCR Image
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AUTH_SECRET }}
-      - uses: azure/vm-deployment@v1
+      - uses: actions/checkout@v2
+      - name: Deploy GHCR Image
+        uses: azure/vm-deployment@v1
         with:
           resource-group: rg-delta-devops
-          vm-name: multi-tenant-application-docker-test 
-          image-url: ghcr.io/junnuvenu/nginx:latest
-          image-type: container
+          vm-name: multi-tenant-application-docker-test-vm
+          image-url: docker pull ghcr.io/junnuvenu/nginx:latest
+          admin-username: azureuser
+          admin-password: Venu12345678
