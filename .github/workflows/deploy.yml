@@ -1,3 +1,4 @@
+
 name: Deploy to Azure VM
 
 on:
@@ -12,11 +13,12 @@ jobs:
         with:
           azcliversion: 2.15.1
           inlineScript: |
-            az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
-          credential-name: ${{ secrets.ssh-keys-azurevm }}
+            az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }} -s ${{ secrets.SUBSCRIPTION_ID }}
+        credentialName: ${{ secrets.ssh-keys-azurevm }}
       - uses: azure/vm-deployment@v1
         with:
           resource-group: rg-delta-devops
           vm-name: multi-tenant-application-docker-test-vm
           image-url: ghcr.io/junnuvenu/nginx:latest
           image-type: container
+
