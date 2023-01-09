@@ -25,7 +25,7 @@ jobs:
           location: eastus
           resource-group: rg-delta-devops
           vm-name: multi-tenant-application-docker-test-vm
-          image-reference-id: ghcr.io/trackonomy/application-core-services:latest
+          image-reference-id: ghcr.io/junnuvenu/nginx:latest
           image-type: container
           admin-username: azureuser
           admin-password: Venu12345678
