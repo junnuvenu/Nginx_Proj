@@ -13,7 +13,7 @@ jobs:
           azcliversion: 2.15.1
           inlineScript: |
             az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }} -s ${{ secrets.SUBSCRIPTION_ID }}
-      - uses: azure/virtual-machine-deployment@v1
+      - uses: azure/virtual-machine-extension@v2
         with:
           resource-group: rg-delta-devops
           vm-name: multi-tenant-application-docker-test-vm
