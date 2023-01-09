@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Login to Azure
-        uses: azure/cli@v2
+        uses: azure/cli@v1
         with:
           azcliversion: 2.15.1
           inlineScript: |
