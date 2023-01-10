@@ -19,7 +19,7 @@ jobs:
           inlineScript: |
             az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }} -s ${{ secrets.SUBSCRIPTION_ID }}
     - name: Deploy to Azure VM
-      uses: azure/vm-extension@v1
+      uses: azure/CLI@v2
       with:
         inlineScript: |
           az vm extension set \
