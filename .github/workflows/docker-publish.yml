@@ -9,13 +9,14 @@ on:
   schedule:
     - cron: '22 19 * * *'
   push:
-    branches: none #[ "master" ]
+    branches: [ "master" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: none # [ "master" ]
+    branches: [ "master" ]
 
 env:
+  GITHUB_SHA: ${{ github.sha }}
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
@@ -78,10 +79,15 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}
+          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}@${{ env.GITHUB_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          
+      - name: Pull the image
+        run: |
+          echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}@${{ env.GITHUB_SHA }}"
+          docker pull "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}@${{ env.GITHUB_SHA }}
 
 
       # Sign the resulting Docker image digest except on PRs.
