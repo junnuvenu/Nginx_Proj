@@ -15,16 +15,15 @@ jobs:
         echo "${{ secrets.ACR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull latest image from ghcr.io
       run: |
-        IMAGE_TAG="ghcr.io/junnuvenu/nginx:${{ env.GITHUB_SHA }}"
-        echo "Pulling image with tag $IMAGE_TAG"
-        docker pull $IMAGE_TAG
-
+        IMAGE_TAG_WITH_SHA="ghcr.io/junnu/nginx:${{ env.GITHUB_SHA }}" # create new variable with updated value
+        echo "Pulling image with tag $IMAGE_TAG_WITH_SHA"
+        docker pull $IMAGE_TAG_WITH_SHA
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy latest image to ACR
       run: |
-        IMAGE_TAG_WITH_SHA="ghcr.io/junnuvenu/nginx:${{ env.GITHUB_SHA }}" # create new variable with updated value
-        ACR_IMAGE_TAG=${secrets.ACR_LOGIN_SERVER}/junnuvenu/nginx:${{ env.GITHUB_SHA }}
-        docker tag $IMAGE_TAG_WITH_SHA $ACR_IMAGE_TAG  # use new variable here
+        IMAGE_TAG_WITH_SHA="ghcr.io/junnu/nginx:${{ env.GITHUB_SHA }}"
+        ACR_IMAGE_TAG=${secrets.ACR_LOGIN_SERVER}/junnu/nginx:${{ env.GITHUB_SHA }}
+        docker tag $IMAGE_TAG_WITH_SHA $ACR_IMAGE_TAG
         docker push $ACR_IMAGE_TAG
