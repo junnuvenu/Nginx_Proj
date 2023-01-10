@@ -23,7 +23,7 @@ jobs:
     - name: Deploy latest image to ACR
       run: |
         IMAGE_TAG=ghcr.io/junnuvenu/nginx_proj:2.0.128
-        ACR_IMAGE_TAG={{secrets.ACR_LOGIN_SERVER}}/nginx_proj:2.0.128
+        ACR_IMAGE_TAG={{secrets.ACR_LOGIN_SERVER}}/nginx:2.0.128
         docker tag $IMAGE_TAG $ACR_IMAGE_TAG
         docker push $ACR_IMAGE_TAG
 
