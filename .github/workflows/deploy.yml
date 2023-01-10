@@ -13,8 +13,6 @@ jobs:
       run: |
        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     - name: Update PATH
-      run: |
-       echo "::set-env name=PATH::$PATH:/usr/local/bin"
     - name: 'Az CLI login'
       uses: azure/login@v1
       with:
