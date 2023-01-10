@@ -21,6 +21,7 @@ jobs:
     - name: Deploy to Azure VM
       uses: azure/CLI@v2
       with:
+        azcliversion: 2.15.1
         inlineScript: |
           az vm extension set \
             --resource-group rg-delta-devops \
