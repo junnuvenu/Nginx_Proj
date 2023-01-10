@@ -11,13 +11,10 @@ jobs:
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin ghcr.io
-    - name: Print IMAGE_TAG variable
-      run: |
-       echo "IMAGE_TAG: ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}"
 
     - name: Pull latest image from ghcr.io
       run: |
-        IMAGE_TAG=ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}
+        IMAGE_TAG=ghcr.io/junnuvenu/nginx_proj:latest
         docker pull $IMAGE_TAG
  
     - name: Login to ACR
@@ -25,8 +22,8 @@ jobs:
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy latest image to ACR
       run: |
-        IMAGE_TAG=ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}
-        ACR_IMAGE_TAG={{secrets.ACR_LOGIN_SERVER}}/nginx_proj:${{ env.GITHUB_SHA }}
+        IMAGE_TAG=ghcr.io/junnuvenu/nginx_proj:latest
+        ACR_IMAGE_TAG={{secrets.ACR_LOGIN_SERVER}}/nginx_proj:latest
         docker tag $IMAGE_TAG $ACR_IMAGE_TAG
         docker push $ACR_IMAGE_TAG
 
