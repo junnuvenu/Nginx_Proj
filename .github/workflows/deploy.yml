@@ -1,27 +1,15 @@
-name: Run Azure Login with OpenID Connect
+name: Deploy
 on: [push]
 
-permissions:
-      id-token: write
-      contents: read
-      
-jobs: 
-  build-and-deploy:
+jobs:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Install Azure CLI
-      run: |
-       curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    - name: Update PATH
-    - name: 'Az CLI login'
-      uses: azure/login@v1
-      with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
-  
-    - name: 'Run Azure CLI commands'
-      run: |
-          az account show
-          az group list
-          pwd 
+      - uses: actions/checkout@v2
+      - name: Login to ACR
+        run: |
+          echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
+      - name: Deploy image to ACR
+        run: |
+          docker tag <ghcr.io/junnuvenu/nginx:latest> "${{ secrets.ACR_LOGIN_SERVER }}/<image>:<tag>"
+          docker push "${{ secrets.ACR_LOGIN_SERVER }}/<image>:<tag>"
