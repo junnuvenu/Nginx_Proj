@@ -15,8 +15,10 @@ jobs:
         echo "${{ secrets.ACR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull latest image from ghcr.io
       run: |
-        IMAGE_TAG=ghcr.io/junnuvenu/nginx:${{ env.GITHUB_SHA }}
+        IMAGE_TAG="ghcr.io/junnuvenu/nginx:${{ env.GITHUB_SHA }}"
+        echo "Pulling image with tag $IMAGE_TAG"
         docker pull $IMAGE_TAG
+
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
