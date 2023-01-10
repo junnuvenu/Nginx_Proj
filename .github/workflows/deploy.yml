@@ -1,7 +1,5 @@
 name: Deploy
 on: [push]
-env:
-  GITHUB_SHA: ${{ github.sha }}
 
 jobs:
   deploy:
@@ -13,10 +11,15 @@ jobs:
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin ghcr.io
+    - name: Print IMAGE_TAG variable
+      run: |
+       echo "IMAGE_TAG: ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}"
+
     - name: Pull latest image from ghcr.io
       run: |
         IMAGE_TAG=ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}
         docker pull $IMAGE_TAG
+ 
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
