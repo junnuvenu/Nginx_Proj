@@ -19,9 +19,8 @@ jobs:
           inlineScript: |
             az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }} -s ${{ secrets.SUBSCRIPTION_ID }}
     - name: Deploy to Azure VM
-      uses: azure/CLI@v2
+      uses: azure/CLI@v1
       with:
-        azcliversion: 2.300.2
         inlineScript: |
           az vm extension set \
             --resource-group rg-delta-devops \
