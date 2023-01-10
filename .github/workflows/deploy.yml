@@ -12,4 +12,4 @@ jobs:
       - name: Deploy image to ACR
         run: |
           docker tag ghcr.io/junnuvenu/nginx:1.0.44 "${{ secrets.ACR_LOGIN_SERVER }}/<image>:<tag>"
-          docker push "${{ secrets.ACR_LOGIN_SERVER }}/<image>:<tag>"
+          docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx:1.0.44"
