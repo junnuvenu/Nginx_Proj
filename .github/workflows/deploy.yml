@@ -1,21 +1,23 @@
-name: Deploy to Azure VM
+name: Run Azure Login with OpenID Connect
+on: [push]
 
-on:
-  push:
-    branches: [ master ]
-jobs:
-  azure-login:
+permissions:
+      id-token: write
+      contents: read
+      
+jobs: 
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Azure
-        uses: azure/cli@v1
-        with:
-          azcliversion: 2.15.1
-          inlineScript: |
-            az login --service-principal -u ${{ secrets.CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }} -s ${{ secrets.SUBSCRIPTION_ID }}
-      - name: Deploy Docker container to Azure VM
-        uses: azure/vm-deployment@v1
-        with:
-          vm-name: multi-tenant-application-docker-test-vm
-          resource-group: rg-delta-devops
-          
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+  
+    - name: 'Run Azure CLI commands'
+      run: |
+          az account show
+          az group list
+          pwd 
