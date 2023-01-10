@@ -12,7 +12,9 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.USERNAME }}" --password-stdin
     - name: Pull the image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}
+       version=$(git describe --tags --abbrev=0)
+       echo "Deploying version ${version}"
+       docker pull ghcr.io/junnuvenu/nginx_proj:$version
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
