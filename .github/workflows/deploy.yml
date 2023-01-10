@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Login to ghcr.io
       run: |
-        echo "${{ secrets.ACR_TOKEN }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin ghcr.io
+        echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin ghcr.io
     - name: Pull latest image from ghcr.io
       run: |
         IMAGE_TAG=ghcr.io/junnuvenu/nginx:${{ env.GITHUB_SHA }}
