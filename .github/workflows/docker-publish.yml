@@ -24,7 +24,6 @@ env:
   IMAGE_NAME: junnuvenu/nginx_proj
   IMAGE_TAG : 2.0.${{github.run_number}}
 
-
 jobs:
   build:
 
