@@ -7,19 +7,15 @@ jobs:
     steps:
     - name: Checkout the code
       uses: actions/checkout@v2
-    - name: Build the image
-      run: |
-        docker build -t ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.USERNAME }}" --password-stdin
-    - name: Push the image to ghcr.io
+    - name: Pull the image from ghcr.io
       run: |
-        docker push ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}
+        docker pull ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy image to ACR
       run: |
-        docker tag ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }} "${{ secrets.ACR_LOGIN_SERVER }}/nginx:${{ env.GITHUB_SHA }}"
-        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx:${{ env.GITHUB_SHA }}"
+        docker tag ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }} "${{ secrets.ACR
