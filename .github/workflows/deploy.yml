@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Build the image
       run: |
-        docker build -t ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }} .
+        docker build -t ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA }}
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.USERNAME }}" --password-stdin
