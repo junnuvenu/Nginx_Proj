@@ -9,7 +9,13 @@ jobs:
       uses: actions/checkout@v2
     - name: Get most recent tag
       run: |
-        TAG=$(curl -s https://api.github.com/repos/junnuvenu/nginx_proj/tags | jq -r '.[0].name')
+        tags=$(curl -s https://api.github.com/repos/junnuvenu/nginx_proj/tags)
+        if echo $tags | grep -q "Not Found"; then
+          echo "No tags found!"
+          exit 1
+        else
+          TAG=$(echo $tags | jq -r '.[0].name')
+        fi
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
