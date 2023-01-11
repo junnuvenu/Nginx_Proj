@@ -1,6 +1,4 @@
-FROM node:16-alpine
-
-RUN apk add --no-cache alpine-sdk bash
+FROM node:latest
 
 # Adding custom index.html
 COPY templates/index.html /usr/share/nginx/html/
