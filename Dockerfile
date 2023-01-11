@@ -1,9 +1,13 @@
-FROM nginx:latest
+FROM node:16-alpine
+
+RUN apk add --no-cache alpine-sdk bash
 
 # Adding custom index.html
 COPY templates/index.html /usr/share/nginx/html/
 # Adding read permissions to custom index.html
 RUN chmod +r /usr/share/nginx/html/index.html
+
+
 
 # 'nginx -g daemon off" will run as default command when any container is run that uses the image that was built using this Dockerfile"
 CMD ["nginx", "-g", "daemon off;"]
