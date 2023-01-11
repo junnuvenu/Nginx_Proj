@@ -11,24 +11,23 @@ jobs:
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Get_tags_from_the_repository
-      id: get_tags
       run: |
         image_tags=$(curl -s -H "Authorization:Bearer ${{ secrets.GHCR_TOKEN }}" https://ghcr.io/api/v1/repos/junnuvenu/nginx_proj/tags | jq '.[] | .name' -r)
         echo "All available tags: ${image_tags}"
         latest_tag=$(echo "${image_tags}" | tr ' ' '\n' | sort -n -t. -k1,1 -k2,2 -k3,3 | tail -1)
         echo "latest_tag is: ${latest_tag}"
-        echo "::set-output name=latest_tag::${latest_tag}"
+        echo "::set-env name=latest_tag::${latest_tag}"
     - name: Pull image from ghcr.io
-      if: steps.get_tags.outputs.latest_tag != ''
+      if: env.latest_tag != ''
       run: |
-        echo "latest tag is : ${{ steps.get_tags.outputs.latest_tag}}"
-        docker pull ghcr.io/junnuvenu/nginx_proj:${{ steps.get_tags.outputs.latest_tag }}
+        echo "latest tag is : ${{ env.latest_tag}}"
+        docker pull ghcr.io/junnuvenu/nginx_proj:${{ env.latest_tag }}
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy image to ACR
-      if: steps.get_tags.outputs.latest_tag != ''
+      if: env.latest_tag != ''
       run: |
-        echo "Deploying ${{ steps.get_tags.outputs.latest_tag }} to ACR"
-        docker tag ghcr.io/junnuvenu/nginx_proj:${{ steps.get_tags.outputs.latest_tag }} "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{ steps.get_tags.outputs.latest_tag }}"
-        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{ steps.Get_tags_from_the_repository.outputs.latest_tag }}
+        echo "Deploying ${{ env.latest_tag }} to ACR"
+        docker tag ghcr.io/junnuvenu/nginx_proj:${{ env.latest_tag }} "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{ env.latest_tag }}"
+        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{ env.latest_tag }}"
