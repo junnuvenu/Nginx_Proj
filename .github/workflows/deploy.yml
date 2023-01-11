@@ -10,16 +10,17 @@ jobs:
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
-    - name: Get last tag
+    - name: Get Last Tag
       run: |
         tags=$(docker run --rm --entrypoint "ash" ghcr.io/junnuvenu/nginx_proj -c "apk add curl; curl -u ${{ secrets.USERNAME }}:${{ secrets.GHCR_TOKEN }} -s https://ghcr.io/api/v1/repos/junnuvenu/nginx_proj/tags | jq '.[] | .name' -r" )
+        echo ::set-output name=tag::$(echo $tags | tr ' ' '\n' | sort -n | tail -1)
     - name: Pull image from ghcr.io
       run: |
-       docker pull ghcr.io/junnuvenu/nginx_proj:${{ steps.GetLastTag.outputs.tag }}
+        docker pull ghcr.io/junnuvenu/nginx_proj:${{ steps.GetLastTag.outputs.tag }}
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy image to ACR
       run: |
-        docker tag ghcr.io/junnuvenu/nginx_proj:${{ steps.GetLastTag.outputs.tag }} "${{ secrets.ACR_LOGIN_SERVER }}/{ steps.GetLastTag.outputs.tag }"
-        docker push "${{ secrets.ACR_LOGIN_SERVER }}/{ steps.GetLastTag.outputs.tag }"
+        docker tag ghcr.io/junnuvenu/nginx_proj:${{ steps.GetLastTag.outputs.tag }} "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{ steps.GetLastTag.outputs.tag }}"
+        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{ steps.GetLastTag.outputs.tag }}"
