@@ -7,6 +7,8 @@ jobs:
     steps:
     - name: Checkout the code
       uses: actions/checkout@v2
+    - name: setup-dotnet
+      uses: actions/setup-dotnet@v2
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
