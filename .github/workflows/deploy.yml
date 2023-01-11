@@ -16,7 +16,7 @@ jobs:
         echo ::set-output name=tag::$(echo $tags | tr ' ' '\n' | sort -n | tail -1)
     - name: Pull image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:${{ steps.Get last tag.outputs.tag }}
+        docker pull ghcr.io/junnuvenu/nginx_proj:${{ steps.Get tag.outputs.tag }}
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
