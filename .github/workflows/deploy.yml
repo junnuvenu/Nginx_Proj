@@ -15,7 +15,7 @@ jobs:
         tags=$(docker run --rm --entrypoint "ash" ghcr.io/junnuvenu/nginx_proj -c "apk add curl; curl -u ${{ secrets.USERNAME }}:${{ secrets.GHCR_TOKEN }} -s https://ghcr.io/api/v1/repos/junnuvenu/nginx_proj/tags | jq '.[] | .name' -r" )
     - name: Pull image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:${{ steps.GetLastTag.outputs.tag }}
+       docker pull ghcr.io/junnuvenu/nginx_proj:${{ steps.GetLastTag.outputs.tag }}
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
