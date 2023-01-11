@@ -12,9 +12,9 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Get tags from the repository
       run: |
-        tags=$(curl -s -H "Authorization:Bearer ${{ secrets.GHCR_TOKEN }}" https://ghcr.io/api/v1/repos/junnuvenu/nginx_proj/tags | jq '.[] | .name' -r)
-        echo "All available tags: ${tags}"
-        latest_tag=$(echo "${tags}" | tr ' ' '\n' | sort -n -t. -k1,1 -k2,2 -k3,3 | tail -1)
+        image_tags=$(curl -s -H "Authorization:Bearer ${{ secrets.GHCR_TOKEN }}" https://ghcr.io/api/v1/repos/junnuvenu/nginx_proj/tags | jq '.[] | .name' -r)
+        echo "All available tags: ${image_tags}"
+        latest_tag=$(echo "${image_tags}" | tr ' ' '\n' | sort -n -t. -k1,1 -k2,2 -k3,3 | tail -1)
         echo "latest_tag is: ${latest_tag}"
     - name: Pull image from ghcr.io
       run: |
