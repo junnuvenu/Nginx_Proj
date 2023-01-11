@@ -17,13 +17,12 @@ jobs:
         latest_tag=$(echo "${image_tags}" | tr ' ' '\n' | sort -n -t. -k1,1 -k2,2 -k3,3 | tail -1)
         echo "latest_tag is: ${latest_tag}"
     - name: Create environment file
-      run: echo "latest_tag=${latest_tag}" > ${{ env.GITHUB_WORKSPACE}}/env.txt
+      run: echo "latest_tag=${latest_tag}" > /github/workspace/env.txt
     - name: Pull image from ghcr.io
       run: |
-        source ${{ env.GITHUB_WORKSPACE}}/env.txt
+        source /github/workspace/env.txt
         echo "latest tag is : ${latest_tag}"
         docker pull ghcr.io/junnuvenu/nginx_proj:${latest_tag}
-
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
