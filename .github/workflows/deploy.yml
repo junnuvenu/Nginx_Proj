@@ -1,22 +1,26 @@
-name: Deploy
-on: [push]
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout the code
+    - name: Checkout code
       uses: actions/checkout@v2
-    - name: Login to ghcr.io
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Pull image from GHCR
       run: |
-        echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
-    - name: Pull image from ghcr.io
+        docker pull ghcr.io/junnuvenu/nginx_proj:2.0.174
+
+    - name: Create or update Azure VM
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:2.0.160
-    - name: Login to ACR
-      run: |
-          echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
-    - name: Deploy image to ACR
-      run: |
-        docker tag ghcr.io/junnuvenu/nginx_proj:2.0.160 "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:2.0.160"
-        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:2.0.160"
+        az vm create --resource-group myrg --name myvm --image ghcr.io/junnuvenu/nginx_proj:2.0.174 --generate-ssh-keys
