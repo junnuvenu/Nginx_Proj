@@ -23,4 +23,4 @@ jobs:
 
     - name: Create or update Azure VM
       run: |
-        az vm create --resource-group myrg --name myvm --image ghcr.io/junnuvenu/nginx_proj:2.0.174 --generate-ssh-keys
+        az vm create --resource-group rg-delta-devops --name myvm --image ghcr.io/junnuvenu/nginx_proj:2.0.174 --generate-ssh-keys
