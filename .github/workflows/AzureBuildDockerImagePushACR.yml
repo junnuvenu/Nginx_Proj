@@ -19,9 +19,9 @@ jobs:
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
-    - name: Pull image from ghcr.io
+    - name: Get latest tag
       run: |
-        docker pull ghcr.io/junnuvenu/nginx:${{ latest_tag }}
+        latest_tag=$(curl -s https://api.github.com/repos/junnuvenu/nginx_proj/releases/latest | jq -r '.tag_name')
     - run: |
         docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:${{ latest_tag }}}"
     - run: |
