@@ -3,17 +3,17 @@ name: docker-ghcr-workflow
 on:
  
   push:
-    branches: none # [ "master" ]
+    branches: [ "master" ]
     # Publish semver tags as releases.
     tags: none # [ 'v*.*.*' ]
   pull_request:
-    branches: none # [ "master" ]
+    branches: [ "master" ]
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   IMAGE_NAME: junnuvenu/nginx_proj
-  IMAGE_TAG : 1.0.${{github.run_number}}
+  IMAGE_TAG : 2.0.${{github.run_number}}
 
 
 jobs:
