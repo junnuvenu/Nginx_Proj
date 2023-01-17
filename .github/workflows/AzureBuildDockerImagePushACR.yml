@@ -1,6 +1,7 @@
 name: Build Linux Container Image and Push to ACR
 
-on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -8,7 +9,7 @@ jobs:
     defaults:
       run:
         shell: bash
-       
+        working-directory: .
     steps:
     - uses: actions/checkout@v2
     - uses: azure/docker-login@v1
@@ -17,5 +18,10 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
     - run: |
-        docker build . -t multitdockeracr.azurecr.io/nginx_proj:${{ github.sha }}
-        docker push multitdockeracr.azurecr.io/nginx_proj:${{ github.sha }}
+        if [[ "${{ github.ref }}" =~ refs/tags/ ]]; then
+          TAG="${github.ref#refs/tags/}"
+        else
+          TAG="${{ github.sha }}"
+        fi
+        docker build . -t multitdockeracr.azurecr.io/nginx_proj:$TAG
+        docker push multitdockeracr.azurecr.io/nginx_proj:$TAG
