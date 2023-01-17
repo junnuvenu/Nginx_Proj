@@ -12,12 +12,12 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:${{ env.env.GITHUB_SHA  }}
+        docker pull ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA  }}
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy image to ACR
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:${{ env.env.GITHUB_SHA  }}
-        docker tag ghcr.io/junnuvenu/nginx_proj:${{ env.env.GITHUB_SHA  }} ${{ env.ACR_LOGIN_SERVER }}/junnuvenu/nginx_proj:${{ env.env.GITHUB_SHA  }}
-        docker push ${{ env.ACR_LOGIN_SERVER }}/junnuvenu/nginx_proj:${{ env.env.GITHUB_SHA  }}
+        docker pull ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA  }}
+        docker tag ghcr.io/junnuvenu/nginx_proj:${{ env.GITHUB_SHA  }} ${{ env.ACR_LOGIN_SERVER }}/junnuvenu/nginx_proj:${{ env.GITHUB_SHA  }}
+        docker push ${{ env.ACR_LOGIN_SERVER }}/junnuvenu/nginx_proj:${{ env.GITHUB_SHA  }}
