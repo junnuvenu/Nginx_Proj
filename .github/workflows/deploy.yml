@@ -1,5 +1,3 @@
-on: [push]
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -11,11 +9,16 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:${{ github.ref }}
+        if [[ "${{ github.ref }}" =~ refs/tags/ ]]; then
+          TAG="${{ github.ref#refs/tags/ }}"
+        else
+          TAG="${{ github.sha }}"
+        fi
+        docker pull ghcr.io/junnuvenu/nginx_proj:$TAG
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy image to ACR
       run: |
-        docker tag ghcr.io/junnuvenu/nginx_proj:${{ github.ref }} "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{ github.ref }}"
-        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{ github.ref }}"
+        docker tag ghcr.io/junnuvenu/nginx_proj:$TAG "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:$TAG"
+        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:$TAG"
