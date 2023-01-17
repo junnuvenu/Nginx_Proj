@@ -22,8 +22,10 @@ jobs:
     - name: Get latest tag
       run: |
         latest_tag=$(curl -s https://api.github.com/repos/junnuvenu/nginx_proj/releases/latest | jq -r '.tag_name')
-    - run: |
+    - name: tag to ACR
+      run: |
         docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:${{ latest_tag }}}"
-    - run: |
+    - name: push to ACR
+      run: |
         SHA=$(git rev-parse HEAD)
         docker push multitdockeracr.azurecr.io/nginx_proj:${{ latest_tag }}
