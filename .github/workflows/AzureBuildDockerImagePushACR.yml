@@ -35,7 +35,7 @@ jobs:
         login-server: multitdockeracr.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-    - run: |
+   - run: |
         SHA=$(git rev-parse HEAD)
         docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}"
         docker push multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}
