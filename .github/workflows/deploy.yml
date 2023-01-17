@@ -12,11 +12,11 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:1.0.238
+        docker pull ghcr.io/junnuvenu/nginx_proj:latest
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy image to ACR
       run: |
-        docker tag ghcr.io/junnuvenu/nginx_proj:1.0.238 "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:1.0.238"
-        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:1.0.238"
+        docker tag ghcr.io/junnuvenu/nginx_proj:latest "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:latest"
+        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:latest"
