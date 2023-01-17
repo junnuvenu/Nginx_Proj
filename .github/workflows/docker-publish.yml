@@ -14,6 +14,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: junnuvenu/nginx_proj
   # IMAGE_TAG : 2.0.${{github.run_number}}
+  IMAGE_TAG : ${{github.sha}}
 
 
 jobs:
@@ -53,7 +54,6 @@ jobs:
        
       - name: Tag the image with commit sha
         run: |
-         IMAGE_TAG=${{github.sha}}
          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{IMAGE_TAG}}
          echo Tagged Docker Image with commit sha: ${{IMAGE_TAG}}
 
