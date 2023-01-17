@@ -23,5 +23,5 @@ jobs:
         else
           TAG="${{ github.sha }}"
         fi
-        docker build . -t multitdockeracr.azurecr.io/nginx_proj:$TAG
-        docker push multitdockeracr.azurecr.io/nginx_proj:$TAG
+        docker build . -t cloudquicklabsacr.azurecr.io/myapp:$TAG
+        docker push cloudquicklabsacr.azurecr.io/myapp:$TAG
