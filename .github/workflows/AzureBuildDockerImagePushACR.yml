@@ -24,5 +24,5 @@ jobs:
         docker pull ghcr.io/junnuvenu/nginx_proj:1.0.220
     - name: push to ACR
       run: |
-        docker tag ghcr.io/junnuvenu/nginx_proj:1.0.220 multitdockeracr.azurecr.io/nginx_proj:1.0.220"
+        docker tag ghcr.io/junnuvenu/nginx_proj:1.0.220 multitdockeracr.azurecr.io/nginx_proj:1.0.220
         docker push multitdockeracr.azurecr.io/nginx_proj:1.0.220"
