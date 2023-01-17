@@ -16,13 +16,17 @@ jobs:
         login-server: multitdockeracr.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
+    - name: Get latest tag
+      run: |
+        TAG=$(curl -s https://api.github.com/repos/junnuvenu/nginx_proj/releases/latest | jq -r '.tag_name')
+        echo "Latest tag is $TAG"
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:1.0.220
+        docker pull ghcr.io/junnuvenu/nginx_proj:$TAG
     - name: push to ACR
       run: |
-        docker tag ghcr.io/junnuvenu/nginx_proj:1.0.220 "multitdockeracr.azurecr.io/nginx_proj:1.0.220"
-        docker push multitdockeracr.azurecr.io/nginx_proj:1.0.220
+        docker tag ghcr.io/junnuvenu/nginx_proj:$TAG "multitdockeracr.azurecr.io/nginx_proj:$TAG"
+        docker push multitdockeracr.azurecr.io/nginx_proj:$TAG
