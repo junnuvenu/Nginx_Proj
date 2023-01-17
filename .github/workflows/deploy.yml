@@ -12,12 +12,15 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull image from ghcr.io
       run: |
-        if [[ "${{ github.ref }}" =~ refs/tags/ ]]; then
-          TAG="${github.ref#refs/tags/}"
+        if [[ "refs/heads/master" =~ refs/tags/ ]]; then
+        if [[ "refs/heads/master" =~ refs/tags/ ]]; then
+        TAG="refs/heads/master"
         else
-          TAG="${{ github.sha }}"
+         TAG="651a480981bb4d7f870079e5cc98393c223a2f0b";
         fi
-        docker pull ghcr.io/junnuvenu/nginx_proj:$TAG
+         docker pull ghcr.io/***/nginx_proj:$TAG
+         shell: /usr/bin/bash -e {0}
+
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
