@@ -1,36 +1,26 @@
-name: Deploy to Azure VM
-
-on:
-  push:
-    branches:
-      - master
+name: Deploy
+on: [push]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
+    - name: Checkout the code
       uses: actions/checkout@v2
-
-    - name: Login to Azure
-      uses: azure/cli@v1
+    - name: Login to ghcr.io
+      run: |
+        echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
+    - name: Build and push to GHCR
+      uses: docker/build-push-action@v2
       with:
-          azcliversion: 2.15.1
-          inlineScript: |
-            az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
-    - name: Set subscription
+        context: .
+        push: true
+        tags: ${{ env.REGISTRY_NAME }}/my-image:${{ env.TAG_NAME }}
+    - name: Login to ACR
       run: |
-        az account set -s ${{ secrets.SUBSCRIPTION_ID }}
-    - name: Assign role to service principal
-      uses: azure/cli@v1
-      with:
-        azcliversion: 2.15.1
-        inlineScript: |
-          az role assignment create --role "Virtual Machine Contributor" --assignee ${{ secrets.SERVICE_PRINCIPAL_APP_ID }} --subscription ${{ secrets.SUBSCRIPTION_ID }}
-    - name: Pull image from GHCR
+          echo "${{ secrets.GHCR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
+    - name: Deploy image to ACR
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:2.0.174
-
-    - name: Create or update Azure VM
-      run: |
-        az vm create --resource-group rg-delta-devops --name myvm --image ghcr.io/junnuvenu/nginx_proj:2.0.174 --generate-ssh-keys
+        docker pull ${{ env.REGISTRY_NAME }}/nginx_proj:${{ env.TAG_NAME }}
+        docker tag ${{ env.REGISTRY_NAME }}/nginx_proj:${{ env.TAG_NAME }} ${{ env.ACR_LOGIN_SERVER }}/nginx_proj:${{ env.TAG_NAME }}
+        docker push ${{ env.ACR_LOGIN_SERVER }}/nginx_proj:${{ env.TAG_NAME }}
