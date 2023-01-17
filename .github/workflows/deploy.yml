@@ -12,8 +12,8 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull image from ghcr.io
       run: |
-        if [[ "${{ github.ref }}" =~ refs/tags/ ]]; 
-          TAG="${{ github.ref#refs/tags/ }}"
+        if [[ "${{ github.ref }}" =~ refs/tags/ ]]; then
+          TAG="${github.ref#refs/tags/}"
         else
           TAG="${{ github.sha }}"
         fi
@@ -25,3 +25,4 @@ jobs:
       run: |
         docker tag ghcr.io/junnuvenu/nginx_proj:$TAG "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:$TAG"
         docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:$TAG"
+
