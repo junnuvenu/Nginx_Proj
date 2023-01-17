@@ -21,9 +21,9 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx:1.0.${{github.run_number}}
+        docker pull ghcr.io/junnuvenu/nginx:latest
     - run: |
-        docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}"
+        docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:latest"
     - run: |
         SHA=$(git rev-parse HEAD)
-        docker push multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}
+        docker push multitdockeracr.azurecr.io/nginx_proj:latest
