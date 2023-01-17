@@ -1,0 +1,22 @@
+name: Deploy
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v2
+    - name: Login to ghcr.io
+      run: |
+        echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
+    - name: Pull image from ghcr.io
+      run: |
+        docker pull ghcr.io/junnuvenu/nginx_proj:1.0.238
+    - name: Login to ACR
+      run: |
+          echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
+    - name: Deploy image to ACR
+      run: |
+        docker tag ghcr.io/junnuvenu/nginx_proj:1.0.238 "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:1.0.238"
+        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:1.0.238"
