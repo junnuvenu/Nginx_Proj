@@ -15,12 +15,12 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ env.REGISTRY_NAME }}/nginx_proj:${{ env.TAG_NAME }}
+        tags: junnuvenu/nginx_proj:${{ env.TAG_NAME }}
     - name: Login to ACR
       run: |
           echo "${{ secrets.GHCR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy image to ACR
       run: |
-        docker pull ${{ env.REGISTRY_NAME }}/nginx_proj:${{ env.TAG_NAME }}
-        docker tag ${{ env.REGISTRY_NAME }}/nginx_proj:${{ env.TAG_NAME }} ${{ env.ACR_LOGIN_SERVER }}/nginx_proj:${{ env.TAG_NAME }}
+        docker pull junnuvenu/nginx_proj:${{ env.TAG_NAME }}
+        docker tag junnuvenu/nginx_proj:${{ env.TAG_NAME }} ${{ env.ACR_LOGIN_SERVER }}/nginx_proj:${{ env.TAG_NAME }}
         docker push ${{ env.ACR_LOGIN_SERVER }}/nginx_proj:${{ env.TAG_NAME }}
