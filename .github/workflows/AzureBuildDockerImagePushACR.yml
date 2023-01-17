@@ -19,14 +19,11 @@ jobs:
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
-    - name: Get latest tag
-      run: |
-        latest_tag=$(curl -s https://api.github.com/repos/junnuvenu/nginx_proj/releases/latest | jq -r '.tag_name')
     - name: Pull image from ghcr.io
       run: |
         docker pull ghcr.io/junnuvenu/nginx:${{ latest_tag }}
     - run: |
-        docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}"
+        docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:${{ latest_tag }}}"
     - run: |
         SHA=$(git rev-parse HEAD)
-        docker push multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}
+        docker push multitdockeracr.azurecr.io/nginx_proj:${{ latest_tag }}
