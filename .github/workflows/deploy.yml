@@ -1,6 +1,9 @@
 name: Deploy
 on: [push]
 
+env:
+  IMAGE_TAG : 1.0.${{github.run_number}}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,11 +15,11 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx_proj:latest
+        docker pull ghcr.io/junnuvenu/nginx_proj:${{env.IMAGE_TAG}}
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy image to ACR
       run: |
-        docker tag ghcr.io/junnuvenu/nginx_proj:latest "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:latest"
-        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:latest"
+        docker tag ghcr.io/junnuvenu/nginx_proj:${{env.IMAGE_TAG}} "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{env.IMAGE_TAG}}t"
+        docker push "${{ secrets.ACR_LOGIN_SERVER }}/nginx_proj:${{env.IMAGE_TAG}}"
