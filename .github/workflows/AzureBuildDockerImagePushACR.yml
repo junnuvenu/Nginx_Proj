@@ -22,7 +22,7 @@ jobs:
     - name: Extract tag from release
       run: |
         TAG=$(echo $RELEASE | jq -r '.tag_name')
-        echo "Latest tag is = $TAG"
+        echo $TAG
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
