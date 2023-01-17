@@ -10,12 +10,9 @@ jobs:
     - name: Login to ghcr.io
       run: |
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
-    - name: Build and push to GHCR
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: junnuvenu/nginx_proj:${{ env.env.GITHUB_SHA  }}
+    - name: Pull image from ghcr.io
+      run: |
+        docker pull ghcr.io/junnuvenu/nginx_proj:${{ env.env.GITHUB_SHA  }}
     - name: Login to ACR
       run: |
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
