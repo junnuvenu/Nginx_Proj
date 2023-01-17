@@ -3,11 +3,11 @@ name: docker-ghcr-workflow
 on:
  
   push:
-    branches: [ "master" ]
+    branches: none # [ "master" ]
     # Publish semver tags as releases.
     tags: none # [ 'v*.*.*' ]
   pull_request:
-    branches: [ "master" ]
+    branches: none # [ "master" ]
 
 env:
   # Use docker.io for Docker Hub if empty
