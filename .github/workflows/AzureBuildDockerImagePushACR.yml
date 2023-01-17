@@ -17,6 +17,26 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
     - run: |
+        i want this IMAGE_TAG =  1.0.${{github.run_number}} in this code name: Build Linux Container Image and Push to ACR
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+        login-server: multitdockeracr.azurecr.io
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+    - run: |
         SHA=$(git rev-parse HEAD)
-        docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:$SHA"
-        docker push multitdockeracr.azurecr.io/nginx_proj:${{ github.sha }}
+        docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}"
+        docker push multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}
+
