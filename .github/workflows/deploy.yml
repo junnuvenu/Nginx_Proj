@@ -21,6 +21,6 @@ jobs:
           echo "${{ secrets.ACR_PASSWORD }}" | docker login --username "${{ secrets.ACR_USERNAME }}" --password-stdin "${{ secrets.ACR_LOGIN_SERVER }}"
     - name: Deploy image to ACR
       run: |
-        docker pull junnuvenu/nginx_proj:${{ env.TAG_NAME }}
+        docker pull ghcr.io/junnuvenu/nginx_proj:${{ env.TAG_NAME }}
         docker tag ghcr.io/junnuvenu/nginx_proj:${{ env.TAG_NAME }} ${{ env.ACR_LOGIN_SERVER }}/junnuvenu/nginx_proj:${{ env.TAG_NAME }}
         docker push ${{ env.ACR_LOGIN_SERVER }}/junnuvenu/nginx_proj:${{ env.TAG_NAME }}
