@@ -21,7 +21,7 @@ jobs:
         echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
     - name: Pull image from ghcr.io
       run: |
-        docker pull ghcr.io/junnuvenu/nginx:1.0.220
+        docker pull ghcr.io/junnuvenu/nginx_proj:1.0.220
     - name: push to ACR
       run: |
         docker tag ghcr.io/junnuvenu/nginx_proj:1.0.220 multitdockeracr.azurecr.io/nginx_proj:1.0.220"
