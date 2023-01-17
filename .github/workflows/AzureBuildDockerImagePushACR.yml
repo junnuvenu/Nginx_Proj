@@ -18,6 +18,5 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
     - run: |
         SHA=$(git rev-parse HEAD)
-        docker tag ghcr.io/junnuvenu/nginx_proj:$SHA "multitdockeracr..azurecr.io/nginx_proj:$SHA"
-        
+        docker tag ghcr.io/junnuvenu/nginx_proj:$SHA "multitdockeracr.azurecr.io/nginx_proj:$SHA"
         docker push multitdockeracr.azurecr.io/nginx_proj:${{ github.sha }}
