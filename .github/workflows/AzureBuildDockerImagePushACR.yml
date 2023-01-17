@@ -16,9 +16,12 @@ jobs:
         login-server: multitdockeracr.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-    - name: Get latest tag
+    - name: Get latest release
       run: |
-        TAG=$(curl -s https://api.github.com/repos/junnuvenu/nginx_proj/releases/latest | jq -r '.tag_name')
+        RELEASE=$(curl -s https://api.github.com/repos/junnuvenu/nginx_proj/releases/latest)
+    - name: Extract tag from release
+      run: |
+        TAG=$(echo $RELEASE | jq -r '.tag_name')
         echo "Latest tag is $TAG"
     - name: Login to ghcr.io
       run: |
