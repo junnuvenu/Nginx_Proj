@@ -16,8 +16,14 @@ jobs:
         login-server: multitdockeracr.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
+    - name: Login to ghcr.io
+      run: |
+        echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
+    - name: Pull image from ghcr.io
+      run: |
+        docker pull ghcr.io/junnuvenu/nginx:1.0.${{github.run_number}}
+    - run: |
+        docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}"
     - run: |
         SHA=$(git rev-parse HEAD)
-        docker tag $(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1) "multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}"
         docker push multitdockeracr.azurecr.io/nginx_proj:1.0.${{github.run_number}}
-
