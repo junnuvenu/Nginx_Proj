@@ -71,9 +71,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           
-      #- name: Login to ghcr.io
-  #      run: |
-    #      echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
+      - name: Login to ghcr.io
+        run: |
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login --username "${{ secrets.USERNAME }}" --password-stdin ghcr.io
       # - name: Pull image from ghcr.io
         # run: |
         #  docker pull ghcr.io/junnuvenu/nginx_proj:${{env.IMAGE_TAG}}
